@@ -1,39 +1,1002 @@
 <!DOCTYPE html>
 <html lang="es">
-  <meta charset="UFT-8">
-<title>Funcionalidades de apps en UXLi Oficials</title>
-<body
-  style="
-  background-color: 
-    rgb(240, 305, 562)
-  "
-  <h1>ULXi ContentID Base</h1>
-  <p>The functionality of this application is:
-- Saving data on the Dashboard
-- Saving the company's different channels on various content platforms
-- Saving published videos/photos
-- Team management
-- Apps
-  https://uxliofficial-contentid</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetWix VidYou</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --netwix-red: #e50914;
+            --netwix-dark: #141414;
+            --netwix-card: #1f1f1f;
+            --netwix-hover: #2a2a2a;
+            --netwix-text: #ffffff;
+            --netwix-secondary: #b3b3b3;
+            --netwix-border: #333333;
+        }
 
-  <h2>UXLi Public API Vault</h2>
-  <p>
-   Save your apps </p>
-  <link>https://uxli-publicapivault.base44.app
-  
-<h2>UXLi VidYou</h2>
-<p>With VidYou you can:
-- Publish videos (vid)
-- Publish short videos (Vid16)
-- Moderate your channel and videos
-- Remove reports on your videos in 3 clicks
-- Protection against tracking and data sales
-and much more. https://vidtube.base44.app</p>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <h2>UXLi HayGram Team</h2>
-  <p>HayGram: Exactly like Instagram
-No data sales or tracking
-No Reels (in development)</p>
-  <link>https://haygram.base44.app
+        body {
+            background-color: var(--netwix-dark);
+            color: var(--netwix-text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: background 0.3s;
+        }
+
+        .navbar.scrolled {
+            background: var(--netwix-dark);
+        }
+
+        .navbar-brand {
+            color: var(--netwix-red) !important;
+            font-weight: 900;
+            font-size: 1.8rem;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+
+        .navbar-brand i {
+            font-size: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--netwix-text) !important;
+            font-weight: 500;
+            margin: 0 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--netwix-secondary) !important;
+        }
+
+        .nav-link.active {
+            color: var(--netwix-text) !important;
+            font-weight: 700;
+        }
+
+        /* Hero / Live Section */
+        .live-section {
+            background: linear-gradient(135deg, #1a0000 0%, var(--netwix-dark) 100%);
+            border-bottom: 2px solid var(--netwix-red);
+            padding: 1rem 0;
+            margin-top: 56px;
+        }
+
+        .live-badge {
+            background: var(--netwix-red);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            animation: pulse 2s infinite;
+            display: inline-block;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .live-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #00ff00;
+            border-radius: 50%;
+            margin-right: 6px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .live-card {
+            background: var(--netwix-card);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            min-width: 280px;
+            border: 1px solid var(--netwix-border);
+        }
+
+        .live-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(229, 9, 20, 0.3);
+            border-color: var(--netwix-red);
+        }
+
+        .live-thumbnail {
+            height: 160px;
+            background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .live-thumbnail i {
+            font-size: 3rem;
+            color: var(--netwix-red);
+        }
+
+        /* Video Grid */
+        .video-card {
+            background: var(--netwix-card);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--netwix-border);
+            height: 100%;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-color: var(--netwix-red);
+        }
+
+        .video-thumbnail {
+            height: 200px;
+            background: linear-gradient(135deg, var(--netwix-card), var(--netwix-hover));
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-thumbnail i {
+            font-size: 3rem;
+            color: rgba(255,255,255,0.5);
+            transition: color 0.3s;
+        }
+
+        .video-card:hover .video-thumbnail i {
+            color: var(--netwix-red);
+        }
+
+        .video-duration {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.8);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .video-info {
+            padding: 1rem;
+        }
+
+        .channel-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--netwix-red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .video-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Modal / Video Player */
+        .modal-content {
+            background: var(--netwix-dark);
+            border: 1px solid var(--netwix-border);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--netwix-border);
+        }
+
+        .video-player-placeholder {
+            width: 100%;
+            height: 400px;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+
+        .video-player-placeholder i {
+            font-size: 5rem;
+            color: var(--netwix-red);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .video-player-placeholder i:hover {
+            transform: scale(1.2);
+        }
+
+        .btn-netwix {
+            background: var(--netwix-red);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn-netwix:hover {
+            background: #b80710;
+            color: white;
+        }
+
+        .btn-netwix-outline {
+            background: transparent;
+            color: var(--netwix-text);
+            border: 1px solid var(--netwix-border);
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-netwix-outline:hover {
+            border-color: var(--netwix-text);
+            color: var(--netwix-text);
+        }
+
+        .btn-netwix-outline.active {
+            background: var(--netwix-red);
+            border-color: var(--netwix-red);
+            color: white;
+        }
+
+        .comment-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--netwix-border);
+        }
+
+        .comment-input {
+            background: var(--netwix-card);
+            border: 1px solid var(--netwix-border);
+            color: var(--netwix-text);
+            border-radius: 8px;
+        }
+
+        .comment-input:focus {
+            background: var(--netwix-card);
+            border-color: var(--netwix-red);
+            color: var(--netwix-text);
+            box-shadow: 0 0 0 0.2rem rgba(229, 9, 20, 0.25);
+        }
+
+        /* Login */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a0000 0%, var(--netwix-dark) 50%, #000 100%);
+        }
+
+        .login-card {
+            background: rgba(0,0,0,0.75);
+            border-radius: 8px;
+            padding: 60px 68px 40px;
+            max-width: 450px;
+            width: 100%;
+            border: 1px solid var(--netwix-border);
+        }
+
+        .form-control {
+            background: var(--netwix-card);
+            border: 1px solid var(--netwix-border);
+            color: var(--netwix-text);
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+        }
+
+        .form-control:focus {
+            background: var(--netwix-hover);
+            border-color: var(--netwix-red);
+            color: var(--netwix-text);
+            box-shadow: 0 0 0 0.2rem rgba(229, 9, 20, 0.25);
+        }
+
+        .form-control::placeholder {
+            color: var(--netwix-secondary);
+        }
+
+        /* Loader */
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--netwix-border);
+            border-bottom-color: var(--netwix-red);
+            border-radius: 50%;
+            animation: rotation 1s linear infinite;
+        }
+
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--netwix-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--netwix-border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .section-title {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title i {
+            color: var(--netwix-red);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg" id="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" onclick="showHome()">
+                <i class="bi bi-play-btn-fill"></i> NETWIX
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    style="border-color: var(--netwix-border);">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" onclick="showHome()">
+                            <i class="bi bi-house-door-fill"></i> Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showLive()">
+                            <i class="bi bi-broadcast"></i> Directos
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="text-light" id="userDisplay"></span>
+                    <button class="btn btn-netwix-outline btn-sm" onclick="logout()">
+                        <i class="bi bi-box-arrow-right"></i> Salir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <div id="appContent">
+        <!-- Se carga dinámicamente -->
+    </div>
+
+    <!-- Modal de Video -->
+    <div class="modal fade" id="videoModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalVideoTitle"></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="video-player-placeholder mb-3" id="videoPlayer">
+                        <i class="bi bi-play-circle-fill" onclick="playVideo()"></i>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="d-flex gap-3">
+                            <button class="btn btn-netwix-outline" id="btnLike" onclick="toggleLike()">
+                                <i class="bi bi-heart"></i> <span id="likeCount">0</span>
+                            </button>
+                            <button class="btn btn-netwix-outline" id="btnSubscribe" onclick="toggleSubscribe()">
+                                <i class="bi bi-bell"></i> Suscribirse
+                            </button>
+                        </div>
+                        <button class="btn btn-netwix-outline" onclick="shareVideo()">
+                            <i class="bi bi-share"></i> Compartir
+                        </button>
+                    </div>
+
+                    <!-- Comentarios -->
+                    <h6 class="mb-3"><i class="bi bi-chat-dots"></i> Comentarios</h6>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control comment-input" id="commentInput" 
+                               placeholder="Añade un comentario...">
+                        <button class="btn btn-netwix" onclick="addComment()">
+                            <i class="bi bi-send"></i>
+                        </button>
+                    </div>
+                    <div id="commentsList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Base44 SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@base44/sdk@latest/dist/base44.umd.js"></script>
+
+    <script>
+        // ============================================
+        // INICIALIZACIÓN
+        // ============================================
+        const base44 = Base44.createClient({
+            appId: '69e35d7036ee749af851d6d1'
+        });
+
+        let currentUser = null;
+        let currentVideo = null;
+        let isLiked = false;
+        let isSubscribed = false;
+        let videoPlayer = null;
+
+        // ============================================
+        // AUTENTICACIÓN
+        // ============================================
+        async function login(email, password) {
+            try {
+                await base44.auth.loginViaEmailPassword(email, password);
+                currentUser = { email: email };
+                
+                // Obtener perfil
+                const profiles = await base44.entities.UserProfile.filter({ email: email });
+                if (profiles.length > 0) {
+                    currentUser.profile = profiles[0];
+                }
+                
+                document.getElementById('userDisplay').textContent = 
+                    currentUser.profile?.name || email;
+                
+                showHome();
+            } catch (error) {
+                alert('Error de login: ' + error.message);
+            }
+        }
+
+        function logout() {
+            base44.auth.logout();
+            currentUser = null;
+            showLogin();
+        }
+
+        // ============================================
+        // NAVEGACIÓN
+        // ============================================
+        function showLogin() {
+            document.getElementById('appContent').innerHTML = `
+                <div class="login-container">
+                    <div class="login-card">
+                        <h1 class="text-center mb-4" style="color: var(--netwix-red);">
+                            <i class="bi bi-play-btn-fill"></i> NETWIX
+                        </h1>
+                        <h2 class="text-center mb-4">Iniciar Sesión</h2>
+                        
+                        <div class="mb-3">
+                            <input type="email" class="form-control" id="loginEmail" 
+                                   placeholder="Email" required>
+                        </div>
+                        <div class="mb-4">
+                            <input type="password" class="form-control" id="loginPassword" 
+                                   placeholder="Contraseña" required>
+                        </div>
+                        
+                        <button class="btn btn-netwix w-100 mb-3" onclick="handleLogin()">
+                            Iniciar Sesión
+                        </button>
+                        
+                        <p class="text-center" style="color: var(--netwix-secondary); font-size: 0.85rem;">
+                            ¿Nuevo en NetWix? <a href="#" style="color: var(--netwix-text);">Suscríbete ahora</a>
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                alert('Por favor, completa todos los campos');
+                return;
+            }
+            
+            login(email, password);
+        }
+
+        async function showHome() {
+            if (!currentUser) {
+                showLogin();
+                return;
+            }
+
+            document.getElementById('appContent').innerHTML = `
+                <div class="text-center py-5">
+                    <div class="loader mx-auto"></div>
+                    <p class="mt-3" style="color: var(--netwix-secondary);">Cargando contenido...</p>
+                </div>
+            `;
+
+            try {
+                const [videos, lives] = await Promise.all([
+                    base44.entities.Video.filter({ status: 'published' }, '-created_date', 50),
+                    base44.entities.LiveStream.filter({ status: 'live' }, '-created_date', 12)
+                ]);
+
+                renderHome(videos, lives);
+                setupRealtimeSubscription();
+            } catch (error) {
+                document.getElementById('appContent').innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="bi bi-exclamation-triangle" style="font-size: 3rem; color: var(--netwix-red);"></i>
+                        <p class="mt-3">Error al cargar: ${error.message}</p>
+                        <button class="btn btn-netwix mt-2" onclick="showHome()">Reintentar</button>
+                    </div>
+                `;
+            }
+        }
+
+        function renderHome(videos, lives) {
+            let html = '';
+
+            // Sección de directos
+            if (lives.length > 0) {
+                html += `
+                <div class="live-section mb-4">
+                    <div class="container-fluid px-4">
+                        <span class="live-badge mb-3">
+                            <span class="live-dot"></span> EN DIRECTO AHORA
+                        </span>
+                        <div class="d-flex gap-3 overflow-auto py-2" style="scroll-snap-type: x mandatory;">
+                            ${lives.map(live => `
+                                <div class="live-card flex-shrink-0" style="scroll-snap-align: start;" 
+                                     onclick="openLiveStream('${live.id}')">
+                                    <div class="live-thumbnail">
+                                        <i class="bi bi-camera-video-fill"></i>
+                                    </div>
+                                    <div class="p-3">
+                                        <h6 class="mb-1">${live.title || 'Sin título'}</h6>
+                                        <small style="color: var(--netwix-secondary);">
+                                            ${live.channel || 'Canal'} · ${live.viewers || 0} espectadores
+                                        </small>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>`;
+            }
+
+            // Grid de videos
+            html += `
+            <div class="container-fluid px-4">
+                <h5 class="section-title">
+                    <i class="bi bi-collection-play"></i> Vídeos recomendados
+                </h5>
+                <div class="row g-4" id="videoGrid">
+                    ${videos.map(video => renderVideoCard(video)).join('')}
+                </div>
+            </div>`;
+
+            document.getElementById('appContent').innerHTML = html;
+        }
+
+        function renderVideoCard(video) {
+            const duration = video.duration ? formatDuration(video.duration) : '10:00';
+            const initials = (video.channelName || 'N').charAt(0).toUpperCase();
+            
+            return `
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                <div class="video-card" onclick="openVideo('${video.id}')">
+                    <div class="video-thumbnail">
+                        <i class="bi bi-play-circle"></i>
+                        <span class="video-duration">${duration}</span>
+                    </div>
+                    <div class="video-info">
+                        <div class="d-flex gap-3">
+                            <div class="channel-avatar">${initials}</div>
+                            <div>
+                                <h6 class="video-title">${video.title || 'Sin título'}</h6>
+                                <small style="color: var(--netwix-secondary);">
+                                    ${video.channelName || 'NetWix'} · ${video.views || 0} vistas · 
+                                    ${timeAgo(video.created_date)}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        // ============================================
+        // VIDEO PLAYER
+        // ============================================
+        async function openVideo(videoId) {
+            try {
+                const videos = await base44.entities.Video.filter({ id: videoId });
+                if (videos.length === 0) return;
+                
+                currentVideo = videos[0];
+                
+                document.getElementById('modalVideoTitle').textContent = currentVideo.title || 'NetWix VidYou';
+                document.getElementById('likeCount').textContent = currentVideo.likes || 0;
+                
+                // Verificar like
+                const likes = await base44.entities.UserInteraction.filter({
+                    video_id: videoId,
+                    user_email: currentUser.email,
+                    type: 'like'
+                });
+                isLiked = likes.length > 0;
+                updateLikeButton();
+                
+                // Verificar suscripción
+                if (currentVideo.channelEmail) {
+                    const subs = await base44.entities.Subscription.filter({
+                        channel_email: currentVideo.channelEmail,
+                        subscriber_email: currentUser.email
+                    });
+                    isSubscribed = subs.length > 0;
+                    updateSubscribeButton();
+                }
+                
+                // Cargar comentarios
+                loadComments(videoId);
+                
+                // Mostrar modal
+                const modal = new bootstrap.Modal(document.getElementById('videoModal'));
+                modal.show();
+                
+                // Iniciar video
+                startVideoPlayer(currentVideo.url);
+                
+            } catch (error) {
+                console.error('Error al abrir video:', error);
+            }
+        }
+
+        function startVideoPlayer(url) {
+            const playerDiv = document.getElementById('videoPlayer');
+            
+            if (url && url.includes('youtube.com') || url.includes('youtu.be')) {
+                // Si es YouTube, usar iframe
+                let videoId = '';
+                if (url.includes('watch?v=')) {
+                    videoId = url.split('watch?v=')[1]?.split('&')[0];
+                } else if (url.includes('youtu.be/')) {
+                    videoId = url.split('youtu.be/')[1]?.split('?')[0];
+                }
+                
+                if (videoId) {
+                    playerDiv.innerHTML = `
+                        <iframe width="100%" height="400" 
+                                src="https://www.youtube.com/embed/${videoId}?autoplay=1" 
+                                frameborder="0" allowfullscreen 
+                                style="border-radius: 8px;">
+                        </iframe>`;
+                }
+            } else if (url) {
+                // Video directo
+                playerDiv.innerHTML = `
+                    <video width="100%" height="400" controls autoplay 
+                           style="border-radius: 8px; background: #000;">
+                        <source src="${url}" type="video/mp4">
+                        Tu navegador no soporta el elemento de video.
+                    </video>`;
+            } else {
+                // Placeholder
+                playerDiv.innerHTML = `
+                    <div class="video-player-placeholder">
+                        <i class="bi bi-play-circle-fill"></i>
+                    </div>`;
+            }
+        }
+
+        function playVideo() {
+            if (currentVideo?.url) {
+                startVideoPlayer(currentVideo.url);
+            }
+        }
+
+        // ============================================
+        // INTERACCIONES
+        // ============================================
+        async function toggleLike() {
+            if (!currentVideo || !currentUser) return;
+            
+            try {
+                if (isLiked) {
+                    const likes = await base44.entities.UserInteraction.filter({
+                        video_id: currentVideo.id,
+                        user_email: currentUser.email,
+                        type: 'like'
+                    });
+                    if (likes.length > 0) {
+                        await base44.entities.UserInteraction.delete(likes[0].id);
+                    }
+                    isLiked = false;
+                    currentVideo.likes = Math.max(0, (currentVideo.likes || 1) - 1);
+                } else {
+                    await base44.entities.UserInteraction.create({
+                        video_id: currentVideo.id,
+                        user_email: currentUser.email,
+                        type: 'like'
+                    });
+                    isLiked = true;
+                    currentVideo.likes = (currentVideo.likes || 0) + 1;
+                }
+                
+                document.getElementById('likeCount').textContent = currentVideo.likes;
+                updateLikeButton();
+                
+            } catch (error) {
+                console.error('Error en like:', error);
+            }
+        }
+
+        function updateLikeButton() {
+            const btn = document.getElementById('btnLike');
+            if (isLiked) {
+                btn.classList.add('active');
+                btn.querySelector('i').classList.remove('bi-heart');
+                btn.querySelector('i').classList.add('bi-heart-fill');
+            } else {
+                btn.classList.remove('active');
+                btn.querySelector('i').classList.remove('bi-heart-fill');
+                btn.querySelector('i').classList.add('bi-heart');
+            }
+        }
+
+        async function toggleSubscribe() {
+            if (!currentVideo?.channelEmail || !currentUser) return;
+            
+            try {
+                if (isSubscribed) {
+                    const subs = await base44.entities.Subscription.filter({
+                        channel_email: currentVideo.channelEmail,
+                        subscriber_email: currentUser.email
+                    });
+                    if (subs.length > 0) {
+                        await base44.entities.Subscription.delete(subs[0].id);
+                    }
+                    isSubscribed = false;
+                } else {
+                    await base44.entities.Subscription.create({
+                        channel_email: currentVideo.channelEmail,
+                        subscriber_email: currentUser.email,
+                        notifications_enabled: true
+                    });
+                    isSubscribed = true;
+                }
+                
+                updateSubscribeButton();
+                
+            } catch (error) {
+                console.error('Error en suscripción:', error);
+            }
+        }
+
+        function updateSubscribeButton() {
+            const btn = document.getElementById('btnSubscribe');
+            if (isSubscribed) {
+                btn.classList.add('active');
+                btn.innerHTML = '<i class="bi bi-bell-fill"></i> Suscrito';
+            } else {
+                btn.classList.remove('active');
+                btn.innerHTML = '<i class="bi bi-bell"></i> Suscribirse';
+            }
+        }
+
+        function shareVideo() {
+            if (!currentVideo) return;
+            
+            const url = currentVideo.url || window.location.href;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: currentVideo.title,
+                    text: 'Mira este video en NetWix VidYou',
+                    url: url
+                }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('Enlace copiado al portapapeles');
+                });
+            }
+        }
+
+        // ============================================
+        // COMENTARIOS
+        // ============================================
+        async function loadComments(videoId) {
+            try {
+                const comments = await base44.entities.Comment.filter(
+                    { video_id: videoId }, 
+                    '-created_date', 
+                    100
+                );
+                
+                const commentsList = document.getElementById('commentsList');
+                
+                if (comments.length === 0) {
+                    commentsList.innerHTML = `
+                        <p style="color: var(--netwix-secondary); text-align: center; padding: 2rem;">
+                            Sé el primero en comentar
+                        </p>`;
+                    return;
+                }
+                
+                commentsList.innerHTML = comments.map(comment => `
+                    <div class="comment-item">
+                        <div class="d-flex gap-3">
+                            <div class="channel-avatar" style="width: 32px; height: 32px; font-size: 0.8rem;">
+                                ${(comment.author_name || 'U').charAt(0).toUpperCase()}
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <strong>${comment.author_name || 'Usuario'}</strong>
+                                    <small style="color: var(--netwix-secondary);">
+                                        ${timeAgo(comment.created_date)}
+                                    </small>
+                                </div>
+                                <p class="mb-0 mt-1">${comment.content || ''}</p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Error al cargar comentarios:', error);
+            }
+        }
+
+        async function addComment() {
+            const input = document.getElementById('commentInput');
+            const content = input.value.trim();
+            
+            if (!content || !currentVideo || !currentUser) return;
+            
+            try {
+                await base44.entities.Comment.create({
+                    video_id: currentVideo.id,
+                    content: content,
+                    author_name: currentUser.profile?.name || currentUser.email,
+                    author_email: currentUser.email,
+                    created_date: new Date().toISOString()
+                });
+                
+                input.value = '';
+                loadComments(currentVideo.id);
+                
+            } catch (error) {
+                console.error('Error al comentar:', error);
+                alert('Error al publicar comentario');
+            }
+        }
+
+        // ============================================
+        // TIEMPO REAL
+        // ============================================
+        function setupRealtimeSubscription() {
+            base44.entities.Video.subscribe((event) => {
+                if (event.type === 'create' && event.data?.status === 'published') {
+                    // Agregar nuevo video al grid
+                    const grid = document.getElementById('videoGrid');
+                    if (grid) {
+                        const card = document.createElement('div');
+                        card.className = 'col-12 col-sm-6 col-lg-4 col-xl-3';
+                        card.innerHTML = renderVideoCard(event.data);
+                        grid.insertBefore(card, grid.firstChild);
+                    }
+                }
+            });
+        }
+
+        // ============================================
+        // UTILIDADES
+        // ============================================
+        function formatDuration(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function timeAgo(dateString) {
+            if (!dateString) return 'Reciente';
+            
+            const date = new Date(dateString);
+            const now = new Date();
+            const diff = now - date;
+            
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+            
+            if (minutes < 1) return 'Ahora';
+            if (minutes < 60) return `Hace ${minutes} min`;
+            if (hours < 24) return `Hace ${hours}h`;
+            if (days < 7) return `Hace ${days}d`;
+            return date.toLocaleDateString();
+        }
+
+        function showLive() {
+            alert('Sección de directos - En desarrollo');
+        }
+
+        function openLiveStream(streamId) {
+            alert('Stream ID: ' + streamId);
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (navbar && window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else if (navbar) {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Iniciar app
+        showLogin();
+    </script>
 </body>
 </html>
